@@ -1,7 +1,7 @@
 -- Set <space> as the leader key
 -- See `:h mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 -- OPTIONS
 --
@@ -56,7 +56,7 @@ vim.o.wrap = false
 vim.o.updatetime = 500
 
 -- Persist 'block' cursor
-vim.o.guicursor = ""
+vim.o.guicursor = ''
 
 -- KEYMAPS
 --
@@ -121,7 +121,30 @@ vim.pack.add({
   'https://github.com/lewis6991/gitsigns.nvim',
 })
 
+-- Initialize Plugins
 require('fzf-lua').setup { fzf_colors = true }
 require('mini.completion').setup {}
 require('quicker').setup {}
 require('gitsigns').setup {}
+
+-- Plugin Keymaps
+local fzf = require('fzf-lua')
+vim.keymap.set('n', '<leader>ff', fzf.files,       { desc = 'Find files' })
+vim.keymap.set('n', '<leader>fg', fzf.live_grep,   { desc = 'Grep project' })
+vim.keymap.set('n', '<leader>fb', fzf.buffers,     { desc = 'Buffers' })
+vim.keymap.set('n', '<leader>fr', fzf.oldfiles,    { desc = 'Recent files' })
+vim.keymap.set('n', '<leader>fh', fzf.help_tags,   { desc = 'Help' })
+vim.keymap.set('n', '<leader>fk', fzf.keymaps,     { desc = 'Keymaps' })
+vim.keymap.set('n', '<leader>f/', fzf.blines,      { desc = 'Search current buffer' })
+
+-- LSP
+vim.keymap.set('n', 'gd',         fzf.lsp_definitions,        { desc = 'Go to definition' })
+vim.keymap.set('n', 'gr',         fzf.lsp_references,         { desc = 'Find references' })
+vim.keymap.set('n', '<leader>fs', fzf.lsp_document_symbols,   { desc = 'Document symbols' })
+vim.keymap.set('n', '<leader>fd', fzf.diagnostics_document,   { desc = 'Document diagnostics' })
+
+-- Git
+vim.keymap.set('n', '<leader>gc', fzf.git_commits,   { desc = 'Git commits' })
+vim.keymap.set('n', '<leader>gs', fzf.git_status,    { desc = 'Git status' })
+vim.keymap.set('n', '<leader>gb', fzf.git_branches,  { desc = 'Git branches' })
+
