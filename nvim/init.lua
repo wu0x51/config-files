@@ -53,7 +53,7 @@ vim.o.shiftwidth = 0 -- Inherit tabstop value for indent operations
 vim.o.wrap = false
 
 -- CursorHold Execute Time
-vim.o.updatetime = 500
+vim.o.updatetime = 1000
 
 -- Persist 'block' cursor
 vim.o.guicursor = ''
@@ -88,6 +88,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Use 2 space tabs for certain languages
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'lua', 'html', 'css', 'javascript' },
+  callback = function()
+    vim.opt_local.tabstop = 2
+  end,
+})
+
 -- USER COMMANDS: DEFINE CUSTOM COMMANDS
 --
 -- See `:h nvim_create_user_command()` and `:h user-commands`
@@ -119,6 +127,14 @@ vim.pack.add({
   'https://github.com/stevearc/quicker.nvim',
   -- Git integration
   'https://github.com/lewis6991/gitsigns.nvim',
+  -- Surround
+  'https://github.com/nvim-mini/mini.surround',
+  -- Oil file explorer
+  'https://github.com/stevearc/oil.nvim',
+  -- Formatter
+  'https://github.com/stevearc/conform.nvim',
+  -- Nord theme
+  'https://github.com/gbprod/nord.nvim',
 })
 
 -- Initialize Plugins
@@ -126,8 +142,24 @@ require('fzf-lua').setup { fzf_colors = true }
 require('mini.completion').setup {}
 require('quicker').setup {}
 require('gitsigns').setup {}
+require('mini.surround').setup {}
+require('oil').setup {}
+require('conform').setup {
+  formatters_by_ft = {
+    html       = { 'prettier' },
+    css        = { 'prettier' },
+    javascript = { 'prettier' },
+  },
+  format_on_save = {
+    timeout_ms = 1000,
+    lsp_fallback = true,  -- fall back to LSP if no formatter found
+  },
+}
+require('nord').setup {}
+vim.cmd.colorscheme('nord')
 
 -- Plugin Keymaps
+-- Fuzzy finding
 local fzf = require('fzf-lua')
 vim.keymap.set('n', '<leader>ff', fzf.files,       { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', fzf.live_grep,   { desc = 'Grep project' })
@@ -143,8 +175,19 @@ vim.keymap.set('n', 'gr',         fzf.lsp_references,         { desc = 'Find ref
 vim.keymap.set('n', '<leader>fs', fzf.lsp_document_symbols,   { desc = 'Document symbols' })
 vim.keymap.set('n', '<leader>fd', fzf.diagnostics_document,   { desc = 'Document diagnostics' })
 
+-- Gitsigns
+vim.keymap.set("n", "<leader>hd", "<CMD>Gitsigns diffthis<CR>")
+vim.keymap.set("n", "<leader>hD", "<CMD>Gitsigns diffthis ~<CR>")
+
 -- Git
 vim.keymap.set('n', '<leader>gc', fzf.git_commits,   { desc = 'Git commits' })
 vim.keymap.set('n', '<leader>gs', fzf.git_status,    { desc = 'Git status' })
 vim.keymap.set('n', '<leader>gb', fzf.git_branches,  { desc = 'Git branches' })
 
+-- Oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>")
+vim.keymap.set("n", "<leader>-", "<CMD>Oil .<CR>")
+
+-- Formatting
+local conform = require('conform')
+vim.keymap.set('n', '<leader>cf', conform.format, { desc = 'Format file' })
