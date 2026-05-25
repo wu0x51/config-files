@@ -175,14 +175,34 @@ vim.keymap.set('n', 'gr',         fzf.lsp_references,         { desc = 'Find ref
 vim.keymap.set('n', '<leader>fs', fzf.lsp_document_symbols,   { desc = 'Document symbols' })
 vim.keymap.set('n', '<leader>fd', fzf.diagnostics_document,   { desc = 'Document diagnostics' })
 
--- Gitsigns
-vim.keymap.set("n", "<leader>hd", "<CMD>Gitsigns diffthis<CR>")
-vim.keymap.set("n", "<leader>hD", "<CMD>Gitsigns diffthis ~<CR>")
-
 -- Git
 vim.keymap.set('n', '<leader>gc', fzf.git_commits,   { desc = 'Git commits' })
 vim.keymap.set('n', '<leader>gs', fzf.git_status,    { desc = 'Git status' })
 vim.keymap.set('n', '<leader>gb', fzf.git_branches,  { desc = 'Git branches' })
+
+-- Gitsigns
+local gs = require('gitsigns')
+
+vim.keymap.set('n', ']c', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ ']c', bang = true })
+  else
+    gs.nav_hunk('next')
+  end
+end, { desc = 'Next hunk' })
+
+vim.keymap.set('n', '[c', function()
+  if vim.wo.diff then
+    vim.cmd.normal({ '[c', bang = true })
+  else
+    gs.nav_hunk('prev')
+  end
+end, { desc = 'Prev hunk' })
+
+vim.keymap.set('n', '<leader>hd', gs.diffthis, { desc = 'Diff against index' })
+vim.keymap.set('n', '<leader>hD', function()
+  gs.diffthis('~')
+end, { desc = 'Diff against last commit' })
 
 -- Oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>")
