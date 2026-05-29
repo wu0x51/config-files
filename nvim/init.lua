@@ -127,6 +127,8 @@ vim.pack.add({
   'https://github.com/stevearc/quicker.nvim',
   -- Git integration
   'https://github.com/lewis6991/gitsigns.nvim',
+
+  -- Installed myself
   -- Surround
   'https://github.com/nvim-mini/mini.surround',
   -- Oil file explorer
@@ -135,6 +137,10 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   -- Nord theme
   'https://github.com/gbprod/nord.nvim',
+
+  -- LSP
+  -- For Eclipse JDT LS
+  'https://github.com/mfussenegger/nvim-jdtls',
 })
 
 -- Initialize Plugins
@@ -155,8 +161,11 @@ require('conform').setup {
     lsp_fallback = true,  -- fall back to LSP if no formatter found
   },
 }
+
 require('nord').setup {}
 vim.cmd.colorscheme('nord')
+
+vim.lsp.enable('jdtls')
 
 -- Plugin Keymaps
 -- Fuzzy finding
