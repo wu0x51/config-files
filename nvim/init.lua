@@ -156,10 +156,6 @@ require('conform').setup {
     css        = { 'prettier' },
     javascript = { 'prettier' },
   },
-  format_on_save = {
-    timeout_ms = 1000,
-    lsp_fallback = true,  -- fall back to LSP if no formatter found
-  },
 }
 
 require('nord').setup {}
@@ -219,4 +215,10 @@ vim.keymap.set("n", "<leader>-", "<CMD>Oil .<CR>")
 
 -- Formatting
 local conform = require('conform')
-vim.keymap.set('n', '<leader>cf', conform.format, { desc = 'Format file' })
+vim.keymap.set('n', '<leader>cf', function()
+  require('conform').format({
+    timeout_ms = 1000,
+    lsp_format = 'fallback',  -- fall back to LSP if no formatter found
+  })
+end, { desc = 'Format file' })
+
