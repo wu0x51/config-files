@@ -162,6 +162,7 @@ require('nord').setup {}
 vim.cmd.colorscheme('nord')
 
 vim.lsp.enable('jdtls')
+vim.lsp.enable('superhtml')
 
 -- Plugin Keymaps
 -- Fuzzy finding
