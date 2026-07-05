@@ -1,0 +1,7 @@
+# Ignore all files to track relevant configs
+*
+
+# What to track
+!.gitignore
+!nvim
+!nvim/**
