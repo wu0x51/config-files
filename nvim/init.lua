@@ -137,6 +137,10 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   -- Nord theme
   'https://github.com/gbprod/nord.nvim',
+  -- Icons
+  'https://github.com/nvim-mini/mini.icons',
+  -- Code outline
+  'https://github.com/stevearc/aerial.nvim',
 
   -- LSP
   -- For Eclipse JDT LS
@@ -150,6 +154,8 @@ require('quicker').setup {}
 require('gitsigns').setup {}
 require('mini.surround').setup {}
 require('oil').setup {}
+require('mini.icons').setup {}
+require('aerial').setup {}
 require('conform').setup {
   formatters_by_ft = {
     html       = { 'prettier' },
@@ -161,6 +167,12 @@ require('conform').setup {
 require('nord').setup {}
 vim.cmd.colorscheme('nord')
 
+vim.lsp.config("jdtls", {
+  cmd = {
+    "jdtls",
+    "--jvm-arg=-Djava.import.generatesMetadataFilesAtProjectRoot=false",
+  }
+})
 vim.lsp.enable('jdtls')
 vim.lsp.enable('superhtml')
 
